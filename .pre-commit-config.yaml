@@ -11,19 +11,19 @@ repos:
     rev: v0.5.4
     hooks:
       - id: ruff
-        args: ["--fix"]
+        args: [ "--fix" ]
   - repo: https://github.com/psf/black-pre-commit-mirror
     # WARNING: Black version should be the same as in `pyproject.toml`
     rev: "24.4.2"
     hooks:
-    - id: black
-      pass_filenames: false
-      require_serial: true
-      args: ["."]
+      - id: black
+        pass_filenames: false
+        require_serial: true
+        args: [ "." ]
   - repo: https://github.com/python-poetry/poetry
     rev: 1.8.3
     hooks:
-    - id: poetry-check
-    - id: poetry-lock
-      # sadly `--no-update` does not work on pre-commit.ci
-      args: ["--check"]
+      - id: poetry-check
+      - id: poetry-lock
+        # sadly `--no-update` does not work on pre-commit.ci
+        args: [ "--check" ]
