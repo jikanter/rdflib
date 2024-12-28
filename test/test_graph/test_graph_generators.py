@@ -3,7 +3,9 @@ import os
 from rdflib import Graph
 from test.data import BOB, CHEESE, HATES, LIKES, MICHEL, PIZZA, TAREK, TEST_DATA_DIR
 
-timblcardn3 = open(os.path.join(TEST_DATA_DIR, "timbl-card.n3")).read()
+def test_read_init():
+    timblcardn3 = open(os.path.join(TEST_DATA_DIR, "timbl-card.n3")).read()
+    return timblcardn3
 
 
 def add_stuff(graph):
@@ -70,7 +72,7 @@ no_of_unique_objects = 62
 
 def test_parse_berners_lee_card_into_graph():
     graph = Graph()
-    graph.parse(data=timblcardn3, format="n3")
+    graph.parse(data=test_read_init(), format="n3")
     assert len(list(graph.subjects())) == no_of_statements_in_card
     assert len(list(graph.subjects(unique=True))) == no_of_unique_subjects
     assert len(list(graph.predicates(unique=True))) == no_of_unique_predicates
