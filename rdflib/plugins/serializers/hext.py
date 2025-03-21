@@ -76,8 +76,8 @@ class HextuplesSerializer(Serializer):
     def serialize(
         self,
         stream: IO[bytes],
-        base: str | None = None,
-        encoding: str | None = "utf-8",
+        base: Optional[str] = None,
+        encoding: Optional[str] = "utf-8",
         **kwargs: Any,
     ) -> None:
         if base is not None:

@@ -68,8 +68,8 @@ class JsonLDSerializer(Serializer):
     def serialize(
         self,
         stream: IO[bytes],
-        base: str | None = None,
-        encoding: str | None = None,
+        base: Optional[str] = None,
+        encoding: Optional[str] = None,
         **kwargs: Any,
     ) -> None:
         # TODO: docstring w. args and return value
