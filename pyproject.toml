@@ -1,11 +1,7 @@
 [tool.poetry]
 name = "sumordflib"
 version = "0.0.2b"
-description = """Fork of RDFLib that includes chaining and reasoning. RDFLib is a Python library for working with RDF, \
-name = "rdflib"
-version = "7.1.4a"
-description = """RDFLib is a Python library for working with RDF, \
-a simple yet powerful language for representing information."""
+description = "Fork of RDFLib that includes chaining and reasoning. RDFLib is a Python library for working with RDF"
 authors = ["Daniel 'eikeon' Krech <eikeon@eikeon.com>",
 "Jordan Kanter <jikanter@gmail.com>"]
 maintainers = ["RDFLib Team <rdflib-dev@googlegroups.com>"]
@@ -71,7 +67,6 @@ coverage = {version = "^7.0.1", extras = ["toml"]}
 types-setuptools = ">=68.0.0.3,<72.0.0.0"
 setuptools = ">=68,<72"
 wheel = ">=0.42,<0.46"
-wheel = ">=0.42,<0.46"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = ">=7.1.2,<8"
@@ -81,7 +76,6 @@ sphinx-autodoc-typehints = ">=2.3.0,<2.4.0"
 typing-extensions = "^4.11.0"
 
 [tool.poetry.group.lint.dependencies]
-ruff = ">=0.0.286,<0.10.0"
 ruff = ">=0.7.2,<1"
 
 [tool.poetry.extras]

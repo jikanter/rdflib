@@ -47,7 +47,8 @@ import logging
 import sys
 from importlib import metadata
 
-_DISTRIBUTION_METADATA = metadata.metadata("rdflib")
+_DISTRIBUTION_METADATA = metadata.metadata("sumordflib")
+
 
 __docformat__ = "restructuredtext en"
 
