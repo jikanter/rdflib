@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sumordflib"
-version = "0.0.2b"
+version = "0.0.3b"
 description = "Fork of RDFLib that includes chaining and reasoning. RDFLib is a Python library for working with RDF"
 authors = ["Daniel 'eikeon' Krech <eikeon@eikeon.com>",
 "Jordan Kanter <jikanter@gmail.com>"]
@@ -24,7 +24,8 @@ classifiers=[
 readme = "README.md"
 packages = [
     { include = "rdflib" },
-    { include = "graphenrich" }
+    { include = "graphenrich" },
+    { include = "metameta" }
 ]
 include = [
     { path = "test", format = "sdist" },
