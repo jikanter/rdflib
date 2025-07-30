@@ -14,11 +14,8 @@
 #
 # We would appreciate acknowledgement if the software is used.
 
-from __future__ import annotations
-
 import random
 from collections import defaultdict
-from typing import DefaultDict, List
 
 from rdflib import RDFS, BNode, Graph, Literal, Namespace, URIRef
 
@@ -31,7 +28,7 @@ def test_sort_semiblank_graph() -> None:
     consistent when involving repeated generates with blank nodes.
     """
 
-    serialization_counter: DefaultDict[str, int] = defaultdict(int)
+    serialization_counter: defaultdict[str, int] = defaultdict(int)
 
     first_graph_text: str = ""
 
@@ -47,13 +44,13 @@ def test_sort_semiblank_graph() -> None:
         graph.add((EX.B, RDFS.comment, Literal("Thing B")))
         graph.add((EX.C, RDFS.comment, Literal("Thing C")))
 
-        nodes: List[URIRef] = [EX.A, EX.B, EX.C, EX.B]
+        nodes: list[URIRef] = [EX.A, EX.B, EX.C, EX.B]
         nonrandom_shuffler.shuffle(nodes)
         for node in nodes:
             # Instantiate one bnode per URIRef node.
             graph.add((BNode(), RDFS.seeAlso, node))
 
-        nesteds: List[URIRef] = [EX.A, EX.B, EX.C]
+        nesteds: list[URIRef] = [EX.A, EX.B, EX.C]
         nonrandom_shuffler.shuffle(nesteds)
         for nested in nesteds:
             # Instantiate a nested node reference.
@@ -69,48 +66,48 @@ def test_sort_semiblank_graph() -> None:
         serialization_counter[graph_text] += 1
 
     expected_serialization = """\
-PREFIX ns1: <http://example.org/ex/>
+PREFIX ex: <http://example.org/ex/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-ns1:A
+ex:A
     rdfs:comment "Thing A" ;
 .
 
-ns1:C
+ex:C
     rdfs:comment "Thing C" ;
 .
 
-ns1:B
+ex:B
     rdfs:comment "Thing B" ;
 .
 
-[]    ns1:has
+[]    ex:has
         [
-            rdfs:seeAlso ns1:A ;
+            rdfs:seeAlso ex:A ;
         ] ;
 .
 
-[]    rdfs:seeAlso ns1:B ;
+[]    rdfs:seeAlso ex:B ;
 .
 
-[]    ns1:has
+[]    ex:has
         [
-            rdfs:seeAlso ns1:C ;
+            rdfs:seeAlso ex:C ;
         ] ;
 .
 
-[]    rdfs:seeAlso ns1:A ;
+[]    rdfs:seeAlso ex:A ;
 .
 
-[]    rdfs:seeAlso ns1:C ;
+[]    rdfs:seeAlso ex:C ;
 .
 
-[]    rdfs:seeAlso ns1:B ;
+[]    rdfs:seeAlso ex:B ;
 .
 
-[]    ns1:has
+[]    ex:has
         [
-            rdfs:seeAlso ns1:B ;
+            rdfs:seeAlso ex:B ;
         ] ;
 .
 

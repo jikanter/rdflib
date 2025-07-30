@@ -1,5 +1,5 @@
 """
-This module contains a number of common tasks using the RDFLib Dataset class.
+This file contains a number of common tasks using the RDFLib Dataset class.
 
 An RDFLib Dataset is an object that stores multiple Named Graphs - instances of RDFLib
 Graph identified by IRI - within it and allows whole-of-dataset or single Graph use.
@@ -10,11 +10,11 @@ archaically called Context - producing quads of s, p, o, g.
 There is an older implementation of a Dataset-like class in RDFLib < 7.x called
 ConjunctiveGraph that is now deprecated.
 
-Sections in this module:
+Sections in this file:
 
-1. Creating & Growing Datasets
-2. Looping & Counting triples/quads in Datasets
-3. Manipulating Graphs with Datasets
+1. Creating & Adding
+2. Looping & Counting
+3. Manipulating Graphs
 """
 
 from rdflib import Dataset, Graph, Literal, URIRef
@@ -30,7 +30,7 @@ from rdflib import Dataset, Graph, Literal, URIRef
 # mypy: ignore_errors=true
 
 #######################################################################################
-#   1. Creating & Growing
+#   1. Creating & Adding
 #######################################################################################
 
 # Create an empty Dataset

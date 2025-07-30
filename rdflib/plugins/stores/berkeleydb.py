@@ -62,25 +62,23 @@ _ResultsFromKeyFunc = Callable[
 
 
 class BerkeleyDB(Store):
-    """\
-    A store that allows for on-disk persistent using BerkeleyDB, a fast
-    key/value DB.
+    """A store that allows for on-disk persistent using BerkeleyDB, a fast key/value DB.
 
     This store implementation used to be known, previous to rdflib 6.0.0
     as 'Sleepycat' due to that being the then name of the Python wrapper
     for BerkeleyDB.
 
     This store allows for quads as well as triples. See examples of use
-    in both the `examples.berkeleydb_example` and ``test/test_store/test_store_berkeleydb.py``
+    in both the `examples.berkeleydb_example` and `test/test_store/test_store_berkeleydb.py`
     files.
 
     **NOTE on installation**:
 
     To use this store, you must have BerkeleyDB installed on your system
-    separately to Python (``brew install berkeley-db`` on a Mac) and also have
-    the BerkeleyDB Python wrapper installed (``pip install berkeleydb``).
+    separately to Python (`brew install berkeley-db` on a Mac) and also have
+    the BerkeleyDB Python wrapper installed (`pip install berkeleydb`).
     You may need to install BerkeleyDB Python wrapper like this:
-    ``YES_I_HAVE_THE_RIGHT_TO_USE_THIS_BERKELEY_DB_VERSION=1 pip install berkeleydb``
+    `YES_I_HAVE_THE_RIGHT_TO_USE_THIS_BERKELEY_DB_VERSION=1 pip install berkeleydb`
     """
 
     context_aware = True
@@ -429,8 +427,7 @@ class BerkeleyDB(Store):
                 cursor = index.cursor(txn=txn)
                 try:
                     cursor.set_range(key)
-                    # Hack to stop 2to3 converting this to next(cursor)
-                    current = getattr(cursor, "next")()
+                    current = cursor.next
                 except db.DBNotFoundError:
                     current = None
                 cursor.close()
@@ -507,8 +504,7 @@ class BerkeleyDB(Store):
             cursor = index.cursor(txn=txn)
             try:
                 cursor.set_range(key)
-                # Cheap hack so 2to3 doesn't convert to next(cursor)
-                current = getattr(cursor, "next")()
+                current = cursor.next
             except db.DBNotFoundError:
                 current = None
             cursor.close()
@@ -540,8 +536,7 @@ class BerkeleyDB(Store):
             key, value = current
             if key.startswith(prefix):
                 count += 1
-                # Hack to stop 2to3 converting this to next(cursor)
-                current = getattr(cursor, "next")()
+                current = cursor.next
             else:
                 break
         cursor.close()
@@ -594,8 +589,7 @@ class BerkeleyDB(Store):
         while current:
             prefix, namespace = current
             results.append((prefix.decode("utf-8"), namespace.decode("utf-8")))
-            # Hack to stop 2to3 converting this to next(cursor)
-            current = getattr(cursor, "next")()
+            current = cursor.next
         cursor.close()
         for prefix, namespace in results:
             yield prefix, URIRef(namespace)
@@ -634,8 +628,7 @@ class BerkeleyDB(Store):
                 cursor = index.cursor()
                 try:
                     cursor.set_range(key)
-                    # Hack to stop 2to3 converting this to next(cursor)
-                    current = getattr(cursor, "next")()
+                    current = cursor.next
                 except db.DBNotFoundError:
                     current = None
                 cursor.close()
