@@ -25,8 +25,6 @@ import weakref
 
 import urllib # for hasContent
 from . import uripath # DanC's tested and correct one
-import binascii  # for building md5 URIs
-from hashlib import md5
 
 from .uripath import refTo
 from .myStore  import Namespace
