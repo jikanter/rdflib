@@ -66,7 +66,7 @@ jsonldtestdoc = """
 
 
 class ContentNegotiationHandler(BaseHTTPRequestHandler):
-    def do_GET(self):  # noqa: N802
+    def do_GET(self):
         self.send_response(200, "OK")
         # fun fun fun parsing accept header.
 
@@ -111,7 +111,7 @@ class TestGraphHTTP:
         expected_triples = GraphHelper.triple_set(expected)
 
         with ctx_http_handler(ContentNegotiationHandler) as server:
-            (host, port) = server.server_address
+            (host, port, *_) = server.server_address
             if isinstance(host, (bytes, bytearray)):
                 host = host.decode("utf-8")
             url = f"http://{host}:{port}/foo"
@@ -126,7 +126,7 @@ class TestGraphHTTP:
         expected_triples = GraphHelper.triple_set(expected)
 
         with ctx_http_handler(ContentNegotiationHandler) as server:
-            (host, port) = server.server_address
+            (host, port, *_) = server.server_address
             if isinstance(host, (bytes, bytearray)):
                 host = host.decode("utf-8")
             url = f"http://{host}:{port}/foo"

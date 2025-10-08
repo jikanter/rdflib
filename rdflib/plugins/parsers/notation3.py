@@ -49,7 +49,7 @@ from uuid import uuid4
 
 from rdflib.compat import long_type
 from rdflib.exceptions import ParserError
-from rdflib.graph import ConjunctiveGraph, Graph, QuotedGraph
+from rdflib.graph import Dataset, Graph, QuotedGraph
 from rdflib.term import (
     _XSD_PFX,
     BNode,
@@ -75,6 +75,7 @@ __all__ = [
     "Formula",
     "RDFSink",
     "SinkParser",
+    "sfloat",
 ]
 
 from rdflib.parser import Parser
@@ -382,6 +383,10 @@ exponent_syntax = re.compile(
 digitstring = re.compile(r"[0-9]+")  # Unsigned integer
 interesting = re.compile(r"""[\\\r\n\"\']""")
 langcode = re.compile(r"[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*")
+
+
+class sfloat(str):  # noqa: N801
+    """don't normalize raw XSD.double string representation"""
 
 
 class SinkParser:
@@ -1530,7 +1535,7 @@ class SinkParser:
                 m = exponent_syntax.match(argstr, i)
                 if m:
                     j = m.end()
-                    res.append(float(argstr[i:j]))
+                    res.append(sfloat(argstr[i:j]))
                     return j
 
                 m = decimal_syntax.match(argstr, i)
@@ -1921,7 +1926,7 @@ class RDFSink:
     def normalise(self, f: Formula | Graph | None, n: Decimal) -> Literal: ...
 
     @overload
-    def normalise(self, f: Formula | Graph | None, n: float) -> Literal: ...
+    def normalise(self, f: Formula | Graph | None, n: sfloat) -> Literal: ...
 
     @overload
     def normalise(self, f: Formula | Graph | None, n: Node) -> Node: ...
@@ -1929,7 +1934,7 @@ class RDFSink:
     def normalise(
         self,
         f: Formula | Graph | None,
-        n: Union[tuple[int, str], bool, int, Decimal, float, Node, _AnyT],
+        n: Union[tuple[int, str], bool, int, Decimal, sfloat, Node, _AnyT],
     ) -> Union[URIRef, Literal, BNode, Node, _AnyT]:
         if isinstance(n, tuple):
             return URIRef(str(n[1]))
@@ -1949,7 +1954,7 @@ class RDFSink:
             s = Literal(value, datatype=DECIMAL_DATATYPE)
             return s
 
-        if isinstance(n, float):
+        if isinstance(n, sfloat):
             s = Literal(str(n), datatype=DOUBLE_DATATYPE)
             return s
 
@@ -1965,7 +1970,7 @@ class RDFSink:
         #    f.universals[n] = f.newBlankNode()
         #    return f.universals[n]
         # type error: Incompatible return value type (got "Union[int, _AnyT]", expected "Union[URIRef, Literal, BNode, _AnyT]")  [return-value]
-        return n  # type: ignore[return-value]
+        return n
 
     def intern(self, something: _AnyT) -> _AnyT:
         return something
@@ -2064,7 +2069,7 @@ class N3Parser(TurtleParser):
         elif not fa:
             raise ParserError("Cannot parse N3 into non-formula-aware store.")
 
-        conj_graph = ConjunctiveGraph(store=graph.store)
+        conj_graph = Dataset(store=graph.store)
         conj_graph.default_context = graph  # TODO: CG __init__ should have a
         # default_context arg
         # TODO: update N3Processor so that it can use conj_graph as the sink
