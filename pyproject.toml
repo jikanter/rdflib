@@ -1,6 +1,6 @@
 [project]
 name = "sumordflib"
-version = "0.0.3a"
+version = "0.0.4"
 description = """A port of rdflib with celebrity fighter skills"""
 authors = [{ name = "Jordan Kanter", email = "jikanter@gmail.com" }]
 maintainers = [{ name = "RDFLib Team", email = "rdflib-dev@googlegroups.com" }]
