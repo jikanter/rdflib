@@ -33,6 +33,7 @@ include = [
 ]
 dynamic = [ "dependencies" ]
 dependencies = [
+    "httpx>=0.28.1",
     'isodate >=0.7.2,<1.0.0; python_version < "3.11"',
     'pyparsing >=3.2.0,<4',
 ]
