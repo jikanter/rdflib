@@ -30,6 +30,7 @@ with open(CLAUDE_MEMORY, 'r', encoding='utf-8') as fd:
             print(e)
             sys.exit(2)
 
+# create items from the two different types of nodes
 finalPayload = {
     'entities': list(filter(lambda x: x.get('type') == 'entity', memoryJson)),
     'relations': list(filter(lambda x: x.get('type') == 'relation', memoryJson))
