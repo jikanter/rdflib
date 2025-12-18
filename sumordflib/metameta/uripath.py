@@ -22,7 +22,6 @@ REFERENCES
 
 __version__ = "$Id: uripath.py,v 1.21 2007-06-26 02:36:16 syosi Exp $"
 
-from string import find, rfind, index
 
 
 def splitFrag(uriref):
@@ -40,7 +39,7 @@ def splitFrag(uriref):
 
     """
 
-    i = rfind(uriref, "#")
+    i = uriref.rfind("#")
     if i>= 0: return uriref[:i], uriref[i+1:]
     else: return uriref, None
 
@@ -59,7 +58,7 @@ def splitFragP(uriref, punct=0):
 
     """
 
-    i = rfind(uriref, "#")
+    i = uriref.rfind("#")
     if i>= 0: return uriref[:i], uriref[i:]
     else: return uriref, ''
 
@@ -98,27 +97,27 @@ def join(here, there):
     u'http://example.org/#Andr\\xe9'
     """
 
-    assert(find(here, "#") < 0), "Base may not contain hash: '%s'"% here # caller must splitFrag (why?)
+    assert(here.find("#") < 0), "Base may not contain hash: '%s'"% here # caller must splitFrag (why?)
 
-    slashl = find(there, '/')
-    colonl = find(there, ':')
+    slashl = there.find('/')
+    colonl = there.find(':')
 
     # join(base, 'foo:/') -- absolute
     if colonl >= 0 and (slashl < 0 or colonl < slashl):
         return there
 
-    bcolonl = find(here, ':')
+    bcolonl = here.find(':')
     assert(bcolonl >= 0), "Base uri '%s' is not absolute" % here # else it's not absolute
 
     path, frag = splitFragP(there)
     if not path: return here + frag
 
     # join('mid:foo@example', '../foo') bzzt
-    if here[bcolonl+1:bcolonl+2] <> '/':
+    if here[bcolonl+1:bcolonl+2] != '/':
         raise ValueError ("Base <%s> has no slash after colon - with relative '%s'." %(here, there))
 
     if here[bcolonl+1:bcolonl+3] == '//':
-        bpath = find(here, '/', bcolonl+3)
+        bpath = here.find('/', bcolonl+3)
     else:
         bpath = bcolonl+1
 
@@ -135,7 +134,7 @@ def join(here, there):
     if there[:1] == '/':
         return here[:bpath] + there
 
-    slashr = rfind(here, '/')
+    slashr = here.rfind('/')
 
     while 1:
         if path[:2] == './':
@@ -144,7 +143,7 @@ def join(here, there):
             path = ''
         elif path[:3] == '../' or path == '..':
             path = path[3:]
-            i = rfind(here, '/', bpath, slashr)
+            i = here.rfind('/', bpath, slashr)
             if i >= 0:
                 here = here[:i+1]
                 slashr = i
@@ -225,10 +224,10 @@ def refTo(base, uri):
     while i>0 and uri[i-1] != '/' : i=i-1  # scan for slash
 
     if i < 3: return uri  # No way.
-    if string.find(base, "//", i-2)>0 \
-       or string.find(uri, "//", i-2)>0: return uri # An unshared "//"
-    if string.find(base, ":", i)>0: return uri  # An unshared ":"
-    n = string.count(base, "/", i)
+    if base.find("//", i-2)>0 \
+       or uri.find("//", i-2)>0: return uri # An unshared "//"
+    if base.find(":", i)>0: return uri  # An unshared ":"
+    n = base.count("/", i)
     if n == 0 and i<len(uri) and uri[i] == '#':
         return "./" + uri[i:]
     elif n == 0 and i == len(uri):
@@ -386,7 +385,7 @@ class Tests(unittest.TestCase):
             ("abc#de/f", "abc", "de/f"),
             )
         for inp, exp1, exp2 in cases:
-            self.assertEquals(splitFrag(inp), (exp1, exp2))
+            assert splitFrag(inp) == (exp1, exp2)
 
     def testRFCCases(self):
 

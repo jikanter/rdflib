@@ -1,6 +1,5 @@
 #! /usr/bin/python
 """
-$Id: why.py,v 1.53 2007/06/27 17:58:39 syosi Exp $
 
 A class for storing the reason why something is known.
 The dontAsk constant reason is used as a reason for the explanations themselves-
@@ -22,7 +21,7 @@ import weakref
 # import notation3    # N3 parsers and generators, and RDF generator
 # import sax2rdf      # RDF1.0 syntax parser to N3 RDF stream
 
-from uripath import refTo
+from sumordflib.metameta.uripath import refTo
 from Minestrone.DataModel.Store.myStore import Namespace
 from rdflib.term import Literal
 from Minestrone.DataModel.Ontology.term import CompoundTerm, AnonymousNode, List
@@ -678,7 +677,7 @@ class BecauseOfData(Because):
         Reason.__init__(self)
         self._source = source
         self._reason = because
-        self.statements = Set()
+        self.statements = set()
         return
 
     def explain(self, ko, flags):
@@ -763,8 +762,13 @@ class BecauseBuiltIn(Reason):
         return me
 
 
+class BecauseOfModel(BecauseBuiltIn):
+    """Because the model predicts it to be so"""
+    pass
+
+
 class BecauseIncludes(BecauseBuiltIn):
-    """Because of the speific built-in log:includes"""
+    """Because of the specific built-in log:includes"""
     pass
 
 
@@ -829,14 +833,5 @@ class BecauseSupports(BecauseBuiltIn):
         for e in statementsForReason:
             r1 = e.explain(ko, flags=flags)
             ko.add(m, reason.component, r1, why=dontAsk)
-        ##        if 'g' in flags:
-        ##            for x in self._subject, self._object:
-        ##                proofs = proofsOf.get(x, None)
-        ##                if proofs != None:
-        ##                    ko.add(me, reason.proof, proof[0].explain(ko, flags=flags), why=dontAsk)
-
-        #       if self._proof != None:
-        #           ko.add(me, reason.proof, self._proof.explain(ko), why=dontAsk)
         return me
-
-# ends
+#ends
