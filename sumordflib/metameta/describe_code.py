@@ -1,5 +1,22 @@
 from sumordflib.metameta import why
 
+class ReasonChain:
+    def __init__(self):
+        self.reasons = {}
+
+    def __getitem__(self, k):
+        return self.reasons[k]
+
+    def __setitem__(self, key, value):
+        self.reasons[key] = value
+
+    def get_reason(self, k):
+        return self.__getitem__(k)
+
+    def show_all(self):
+        return self.reasons
+
+
 class CodeAdapter:
     def __init__(self, obj, adapted_methods):
         self.obj = obj
@@ -8,10 +25,13 @@ class CodeAdapter:
     def __str__(self):
         return str(self.obj)
 
+
+
 class CodeReasoner:
 
     def __init__(self):
         self.adapter_registry = {}
+        self.chain = ReasonChain()
         self.current_adapter = None
 
     def related_clause(self, c1, c2):
@@ -62,11 +82,11 @@ class CodeReasoner:
         return code.code(context)
 
     def show_reasoning_chain(self, chain):
-        return chain.show_all()
+        return self.chain.show_all()
+
 
 
 
 if __name__ == '__main__':
     c = CodeReasoner()
-
     print(c.related_clause('a=', '10'))
